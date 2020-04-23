@@ -1,11 +1,14 @@
 package cn.lxr.dataStructure.binaryTree;
 
+import java.util.Stack;
+
 public class BinaryTree {
 
     private Node root;
 
     /**
      * 查询
+     *
      * @param key
      * @return
      */
@@ -26,6 +29,7 @@ public class BinaryTree {
 
     /**
      * 插入
+     *
      * @param key
      * @param fData
      */
@@ -57,6 +61,7 @@ public class BinaryTree {
 
     /**
      * 删除
+     *
      * @param key
      */
     public boolean delete(int key) {
@@ -119,6 +124,7 @@ public class BinaryTree {
     /**
      * 获取后继节点
      * <p>从delNode的右节点开始搜索，查询key大于delNode的最小节点（即最左子节点）</p>
+     *
      * @param delNode
      * @return
      */
@@ -141,6 +147,7 @@ public class BinaryTree {
 
     /**
      * 获得最小值
+     *
      * @return
      */
     public Node minimum() {
@@ -155,6 +162,7 @@ public class BinaryTree {
 
     /**
      * 获得最大值
+     *
      * @return
      */
     public Node maxmum() {
@@ -168,11 +176,36 @@ public class BinaryTree {
     }
 
     /**
+     * 排序访问
+     *
+     * @param traverseType
+     */
+    public void traverse(int traverseType) {
+        switch (traverseType) {
+            case 1:
+                System.out.println("PreOrder:");
+                preOrder(root);
+                break;
+            case 2:
+                System.out.println("InOrder:");
+                inOrder(root);
+                break;
+            case 3:
+                System.out.println("PostOrder");
+                postOrder(root);
+                break;
+            default:
+                break;
+        }
+    }
+
+    /**
      * 中序遍历
      * <p>升序遍历：inOrder(root)</p>
+     *
      * @param localRoot
      */
-    public void inOrder(Node localRoot) {
+    private void inOrder(Node localRoot) {
         if (localRoot != null) {
             inOrder(localRoot.leftChild);
             System.out.println("localRoot.iData = " + localRoot.iData);
@@ -182,9 +215,10 @@ public class BinaryTree {
 
     /**
      * 前序遍历
+     *
      * @param localRoot
      */
-    public void preOrder(Node localRoot) {
+    private void preOrder(Node localRoot) {
         if (localRoot != null) {
             System.out.println("localRoot.iData = " + localRoot.iData);
             preOrder(localRoot.leftChild);
@@ -194,13 +228,51 @@ public class BinaryTree {
 
     /**
      * 后序遍历
+     *
      * @param localRoot
      */
-    public void backOrder(Node localRoot) {
+    private void postOrder(Node localRoot) {
         if (localRoot != null) {
-            backOrder(localRoot.leftChild);
-            backOrder(localRoot.rightChild);
+            postOrder(localRoot.leftChild);
+            postOrder(localRoot.rightChild);
             System.out.println("localRoot.iData = " + localRoot.iData);
+        }
+    }
+
+    /**
+     * 遍历树
+     */
+    public void displayTree() {
+        Stack globalStack = new Stack();
+        globalStack.push(root);
+        boolean isRowEmpty = false;
+        System.out.println("..........................................");
+        while (!isRowEmpty) {
+            Stack localStack = new Stack();
+            isRowEmpty = true;
+            while (!globalStack.isEmpty()) {
+                Node temp = (Node) globalStack.pop();
+                if (temp != null) {
+                    System.out.print(temp.iData);
+                    localStack.push(temp.leftChild);
+                    localStack.push(temp.rightChild);
+                    if (temp.leftChild != null || temp.rightChild != null) {
+                        isRowEmpty = false;
+                    }
+                } else {
+                    System.out.print("--");
+                    localStack.push(null);
+                    localStack.push(null);
+                }
+                System.out.println();
+                while (!localStack.isEmpty()) {
+                    Node pop = (Node)localStack.pop();
+                    if (pop != null) {
+                        globalStack.push(pop);
+                    }
+                }
+                System.out.println("..........................................");
+            }
         }
     }
 }
