@@ -1,4 +1,4 @@
-package cn.lxr.mutiThread;
+package cn.lxr.multiThread;
 
 import org.junit.Ignore;
 import org.junit.Test;
